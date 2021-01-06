@@ -20,6 +20,9 @@ class Abstract_UCB_Node():
 		self.N_s = 1 #total states explored (plus one)
 		self.N_s_a = np.zeros(action_size) #num nodes explored stemming from each state,action pair
 
+		self.N_s_a_t = np.zeros(action_size) #num terminal nodes reached from each state_action pair
+		self.Z = 0 #Z = sum of win/tie/loss stat from all terminal nodes stemming from self
+
 		self.children = [None for _ in range(self.action_size)]
 
 		#Q = sum of values predicted by net of all nodes stemming from self
@@ -54,6 +57,12 @@ class Abstract_UCB_Node():
 	def backup(self):
 		# recursively adds self.pred_v to parent.Q[self.parent_action_idx] until root is reached
 			#negative for opposite team
+
+		#terminal,w = self.terminal_node()
+		#if terminal
+			#w = 1 if win, -1 if loss, 0 if tie
+			# recursively adds w to parent.Z until root is reached
+			# recursively adds 1 to parent.N_s_a_t[self.parent_action_idx] until root is reached
 		pass
 
 	def terminal_node(self):
