@@ -28,6 +28,9 @@ class NN:
 	def predict(self,state):
 		return self.model(state)
 
+	def fit(self,state,value,action,epochs=1):
+		self.model.fit(state,np.array([value,action]),epochs=epochs)
+
 	def build_model(self):
 		#copied and slightly changed from
 		#https://github.com/AppliedDataSciencePartners/DeepReinforcementLearning/blob/master/model.py
