@@ -3,7 +3,7 @@ import config
 
 class Abstract_UCB_Node():
 
-	def __init__(self,parent,parent_action_idx,state,BatchManager,GameManager,turns_until_tau):
+	def __init__(self,parent,parent_action_idx,state,BatchManager,GameManager):
 		self.parent = parent  #parent node
 		self.parent_action_idx = parent_action_idx #index of parent action
 		self.state = state
@@ -13,7 +13,6 @@ class Abstract_UCB_Node():
 
 		self.action_size = config.ACTION_SIZE
 		self.c_puct = config.CPUCT
-		self.turns_until_tau = turns_until_tau
 		self.epsilon = config.EPSILON
 		self.alpha = config.ALPHA 
 
@@ -22,6 +21,8 @@ class Abstract_UCB_Node():
 
 		self.N_s_a_t = np.zeros(action_size) #num terminal nodes reached from each state_action pair
 		self.Z = 0 #Z = sum of win/tie/loss stat from all terminal nodes stemming from self
+
+		self.v_loss = np.zeros(action_size) #virtual losses returned by each action 
 
 		self.children = [None for _ in range(self.action_size)]
 
@@ -38,7 +39,7 @@ class Abstract_UCB_Node():
 	def add_dirichlet_noise(self):
 		#adds dirichlet noise only if UCB_Node is root node
 		if self.parent == None:
-			pass #add noise to parent
+			pass #add noise
 
 
 	def fix_actions(self):
@@ -47,16 +48,21 @@ class Abstract_UCB_Node():
 
 	def act(self):
 		#calculate UCB and determine best action
+		#self.v_loss[best_action] += 1
+
 		#if never taken
 			#initialize child node corresponding to best action
 			#set self.children[action_idx] to child
-		#else
+		#elif not terminal node
 			#child.act()
+
+
 		pass
 
 	def backup(self):
 		# recursively adds self.pred_v to parent.Q[self.parent_action_idx] until root is reached
 			#negative for opposite team
+		#recursively subtracts 1 from parent.v_loss[self.parent_action_idx] until root
 
 		#terminal,w = self.terminal_node()
 		#if terminal
@@ -78,13 +84,13 @@ class Abstract_UCB_Node():
 
 	def calculate_Q(self):
 		#average predicted value
-		return np.nan_to_num(self.Q/self.N_s_a)
+		#behave as if value of -1 was returned for every virtual loss
+		self.vQ = self.Q - self.v_loss
+
+		return np.nan_to_num(self.vQ/(self.N_s_a + self.v_loss))
 
 	def calculate_Z(self):
 		#average terminal state value
-		t,w = self.terminal_node()
-		if t:
-			return w
 		return np.nan_to_num(self.Z/self.N_s_a_t)
 
 	def calculate_UCB(self):
