@@ -1,5 +1,5 @@
 #### SELF PLAY
-EPISODES = 100 #number of games to play per training ep
+EPISODES = 20 #number of games to play per training epoch
 MCTS_SIMS = 1000 #rollouts on every turn
 TURNS_UNTIL_TAU0 = 20 # turn on which it starts playing deterministically
 CPUCT = 2 #constant for tuning UCB = Q + CPUCT*U
@@ -19,6 +19,9 @@ WINDOW_SIZE_HIGH = 20
 
 #Shapes of convolutional and Resnet layers
 HIDDEN_CNN_LAYERS = [{'filters':128, 'kernel_size': (3,3)} for _ in range(20)]
+
+####TRAINING DURATION
+TOTAL_TRAINING_EPOCHS = 1000
 
 #### EVALUATION
 EVAL_EPISODES = 20

@@ -32,11 +32,10 @@ class Abstract_UCB_Node():
 		self.pred_v,self.pred_action = self.request_prediction(state,BatchManager)
 
 		self.fix_actions(GameManager)
-		self.add_dirichlet_noise()
 
 		self.backup()
 
-	def add_dirichlet_noise(self):
+	def add_dirichlet_noise(self,epsilon,alpha):
 		#adds dirichlet noise only if UCB_Node is root node
 		if self.parent == None:
 			pass #add noise
