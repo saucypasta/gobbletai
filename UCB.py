@@ -35,6 +35,17 @@ class UCB_Node():
 		if self.parent == None:
 			pass #add noise
 
+	def select_action(self,deterministic):
+		#selects action probabalistically according to UCB calculations
+		UCB = self.calculate_UCB()
+
+		prob = UCB/np.sum(UCB) #normalize to prob distribution
+
+		if deterministic:
+			return np.argmax(prob)
+		else:
+			return np.random.choice(list(range(self.action_size)),p=prob)
+
 
 	def fix_actions(self):
 		#set probability of illegal actions to zero
@@ -58,7 +69,7 @@ class UCB_Node():
 	def expand(self,pred_v,pred_action):
 		#expand is run after caller has formed and processed batch
 		self.expanded = True
-		
+
 		self.pred_v,self.pred_action = pred_v,pred_action
 
 		self.fix_actions(GameManager)
@@ -109,4 +120,8 @@ class UCB_Node():
 		pred_v,pred_action = BatchManager.request_prediction(state)
 
 		return pred_v, pred_action
+
+	def set_as_root(self):
+		self.parent = None
+		self.add_dirichlet_noise()
 		

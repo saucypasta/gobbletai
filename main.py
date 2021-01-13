@@ -4,9 +4,6 @@ from UCB import UCB
 from GameManagers import GobletGameManager
 
 def train_model(GameManager,CPU):
-	games_per_epoch = config.EPISODES
-	mcts_per_game = config.MCTS_SIM
-	mcts_batch_size = config.MCTS_BATCH_SIZE 
 
 	training_epochs = config.TOTAL_TRAINING_EPOCHS
 
