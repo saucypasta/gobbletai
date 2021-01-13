@@ -42,9 +42,9 @@ class UCB_Node():
 		prob = UCB/np.sum(UCB) #normalize to prob distribution
 
 		if deterministic:
-			return np.argmax(prob)
+			return self.children[np.argmax(prob)]
 		else:
-			return np.random.choice(list(range(self.action_size)),p=prob)
+			return self.children[np.random.choice(list(range(self.action_size)),p=prob)]
 
 
 	def fix_actions(self):
@@ -120,8 +120,4 @@ class UCB_Node():
 		pred_v,pred_action = BatchManager.request_prediction(state)
 
 		return pred_v, pred_action
-
-	def set_as_root(self):
-		self.parent = None
-		self.add_dirichlet_noise()
 		

@@ -62,7 +62,8 @@ class Agent():
 			new_roots = [root.select_action(turn_count > self.temp) for root in searched_roots]
 			for root in new_roots:
 				root.parent = None
-				
+				if turn_count < self.temp:
+					root.add_dirichlet_noise()
 
 
 
