@@ -1,15 +1,16 @@
 import numpy as np
 import config
 
-class Abstract_UCB_Node():
 
-	def __init__(self,parent,parent_action_idx,state,BatchManager,GameManager):
+class UCB_Node():
+
+	def __init__(self,parent,parent_action_idx,state,GameManager):
 		self.parent = parent  #parent node
 		self.parent_action_idx = parent_action_idx #index of parent action
 		self.state = state
 
 		self.GameManager = GameManager #follows AbstractGameManager class
-		self.BatchManager = BatchManager #follows AbstractBatchManager class
+		#self.BatchManager = BatchManager #follows AbstractBatchManager class
 
 		self.action_size = config.ACTION_SIZE
 		self.c_puct = config.CPUCT
@@ -29,12 +30,6 @@ class Abstract_UCB_Node():
 		#Q = sum of values predicted by net of all nodes stemming from self
 		self.Q = np.zeros(action_size)
 
-		self.pred_v,self.pred_action = self.request_prediction(state,BatchManager)
-
-		self.fix_actions(GameManager)
-
-		self.backup()
-
 	def add_dirichlet_noise(self,epsilon,alpha):
 		#adds dirichlet noise only if UCB_Node is root node
 		if self.parent == None:
@@ -45,18 +40,28 @@ class Abstract_UCB_Node():
 		#set probability of illegal actions to zero
 		pass
 
-	def act(self):
+	def select_leaf(self):
 		#calculate UCB and determine best action
 		#self.v_loss[best_action] += 1
 
 		#if never taken
 			#initialize child node corresponding to best action
 			#set self.children[action_idx] to child
+			#return child 
 		#elif not terminal node
-			#child.act()
-
+			#child.select_leaf()
 
 		pass
+
+	def expand(self,pred_v,pred_action):
+		#expand is run after caller has formed and processed batch
+
+		self.pred_v,self.pred_action = pred_v,pred_action
+
+		self.fix_actions(GameManager)
+
+		self.backup()
+
 
 	def backup(self):
 		# recursively adds self.pred_v to parent.Q[self.parent_action_idx] until root is reached

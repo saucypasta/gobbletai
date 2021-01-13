@@ -1,6 +1,7 @@
 #### SELF PLAY
 EPISODES = 20 #number of games to play per training epoch
 MCTS_SIMS = 1000 #rollouts on every turn
+MCTS_BATCH_SIZE = 50
 TURNS_UNTIL_TAU0 = 20 # turn on which it starts playing deterministically
 CPUCT = 2 #constant for tuning UCB = Q + CPUCT*U
 EPSILON = 0.2 

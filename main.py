@@ -6,11 +6,12 @@ from GameManagers import GobletGameManager
 def train_model(GameManager,CPU):
 	games_per_epoch = config.EPISODES
 	mcts_per_game = config.MCTS_SIM
+	mcts_batch_size = config.MCTS_BATCH_SIZE 
 
 	training_epochs = config.TOTAL_TRAINING_EPOCHS
 
 	for i in range(training_epochs):
-		CPU.self_play(games_per_epoch,mcts_per_game)
+		CPU.self_play(games_per_epoch,mcts_per_game,mcts_batch_size)
 
 
 def run_model(GameManager,CPU,run):
